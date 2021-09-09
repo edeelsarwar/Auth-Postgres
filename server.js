@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 var morgan = require('morgan')
 const db = require("./app/models");
+var { graphqlHTTP } = require('express-graphql');
+const schema = require('./app/schema/index')
 db.sequelize.sync();
 
 
@@ -30,7 +32,10 @@ app.get("/", (req, res) => {
 require("./app/routes/tutorial.js")(app);
 require("./app/routes/comment.js")(app);
 
-
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+  }));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

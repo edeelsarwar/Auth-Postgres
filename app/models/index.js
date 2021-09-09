@@ -23,7 +23,7 @@ db.tutorials = require("./tutorial-model.js")(sequelize, Sequelize);
 db.comments = require("./comment-model")(sequelize, Sequelize);
 
 
-db.tutorials.hasMany(db.comments, { as: "comments" });
+db.tutorials.hasMany(db.comments, {foreignKey:'tutorialId', as: "comments" });
 db.comments.belongsTo(db.tutorials, {
   foreignKey: "tutorialId",
   as: "tutorial",

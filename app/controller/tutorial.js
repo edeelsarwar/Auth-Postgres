@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
   
-    Tutorial.findAll({ where: condition },{ include: ["comments"] })
+    Tutorial.findAll({ include: [{model:db.comments, as: 'comments'}] })
       .then(data => {
         res.send(data);
       })

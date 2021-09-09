@@ -21,7 +21,13 @@ exports.createComment = (req , res) => {
   exports.findCommentById = (req , res) => {
     const id = req.params.id;
     console.log('here',req)
-    return Comment.findByPk(id, { include: ["tutorial"] })
+    return Comment.findByPk(id,{
+      attributes: ['name' ] ,
+      include: [{
+         model:db.tutorials,
+         as: "tutorial",
+         attributes:['title'] 
+    }] })
       .then((comment) => {
         res.send(comment);
       })
