@@ -31,11 +31,24 @@ app.get("/", (req, res) => {
 });
 require("./app/routes/tutorial.js")(app);
 require("./app/routes/comment.js")(app);
+//////////////////////GraphQL///////////////////////////////
 
-app.use('/graphql', graphqlHTTP({
+const context = async req=>{
+    const host = req.headers.host;
+    const token = 'your-jwt-token'
+    return {host,token}
+}
+
+var root ={
+    db : db
+}
+
+app.use('/graphql', graphqlHTTP(async req => ({
     schema: schema,
+    rootValue:root,
     graphiql: true,
-  }));
+    context: ()=> context(req)
+  })));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
