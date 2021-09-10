@@ -1,9 +1,15 @@
+const { table } = require("console");
 const db = require("../models");
 const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
-exports.create = (req, res) => {
+exports.create = async (req, res) =>  {
+
+  const tutorial =  db.sequelize.query('SELECT * FROM tutorial',
+{ model: db.tutorials})
+   console.log('here we go',tutorial)
+   res.send(tutorial)
    // Validate request
    if (!req.body.title) {
     res.status(400).send({
@@ -36,6 +42,16 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
+ 
+ //for raw query 
+  // try{
+
+  //   let data = await db.sequelize.query('SELECT * FROM tutorials')
+  //   console.log('got it',data)
+  // }catch (err)
+  // {
+  //  console.log(err) 
+  // }
     console.log(req.body)
     const title = req.query.title;
     var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
